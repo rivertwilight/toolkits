@@ -94,11 +94,11 @@ function AppsMenu() {
 	];
 
 	return (
-        <>
-            <IconButton onClick={handleClick} size="large">
+		<>
+			<IconButton onClick={handleClick} size="large">
 				<AppsRounded />
 			</IconButton>
-            <Popover
+			<Popover
 				anchorEl={anchorEl}
 				open={Boolean(anchorEl)}
 				onClose={handleClose}
@@ -135,9 +135,8 @@ function AppsMenu() {
 					{apps.map((app, index) => (
 						<Grid item xs={4} key={index}>
 							<Link href={app.link}>
-                                {/* @next-codemod-error This Link previously used the now removed `legacyBehavior` prop, and has a child that might not be an anchor. The codemod bailed out of lifting the child props to the Link. Check that the child component does not render an anchor, and potentially move the props manually to Link. */
-                                }
-                                <Box
+								{/* @next-codemod-error This Link previously used the now removed `legacyBehavior` prop, and has a child that might not be an anchor. The codemod bailed out of lifting the child props to the Link. Check that the child component does not render an anchor, and potentially move the props manually to Link. */}
+								<Box
 									component="a"
 									target="_blank"
 									rel="noopener noreferrer"
@@ -186,7 +185,7 @@ function AppsMenu() {
 										{app.name}
 									</Typography>
 								</Box>
-                            </Link>
+							</Link>
 						</Grid>
 					))}
 				</Grid>
@@ -202,8 +201,8 @@ function AppsMenu() {
 					{hoverDescription}
 				</Typography> */}
 			</Popover>
-        </>
-    );
+		</>
+	);
 }
 
 const AccountPanel = lazy(() => import("./AccountPanel"));
@@ -228,8 +227,8 @@ export default (props: {
 	const [showGetAppChip, setShowGetAppChip] = useState(true);
 
 	return (
-        <>
-            <ElevationScroll {...props}>
+		<>
+			<ElevationScroll {...props}>
 				<AppBar
 					color="secondary"
 					position="fixed"
@@ -261,10 +260,15 @@ export default (props: {
 								alignItems: "center",
 							}}
 						>
-							<Link href="/">
-                                {/* @next-codemod-error This Link previously used the now removed `legacyBehavior` prop, and has a child that might not be an anchor. The codemod bailed out of lifting the child props to the Link. Check that the child component does not render an anchor, and potentially move the props manually to Link. */
-                                }
-                                <Typography
+							<Box
+								component={Link}
+								href="/"
+								sx={{
+									textDecoration: "none",
+									color: "inherit",
+								}}
+							>
+								<Typography
 									component="span"
 									variant="h6"
 									color="textPrimary"
@@ -275,7 +279,7 @@ export default (props: {
 								>
 									{siteConfig.appName}
 								</Typography>
-                            </Link>
+							</Box>
 							<Typography
 								id="navbar-localTitle"
 								color="primary"
@@ -357,7 +361,7 @@ export default (props: {
 					</Toolbar>
 				</AppBar>
 			</ElevationScroll>
-            {showLoginDialog && (
+			{showLoginDialog && (
 				<Suspense fallback={<Box />}>
 					<AccountPanel
 						open={showLoginDialog}
@@ -365,6 +369,6 @@ export default (props: {
 					/>
 				</Suspense>
 			)}
-        </>
-    );
+		</>
+	);
 };
