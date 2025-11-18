@@ -66,7 +66,7 @@ export default async function AppPage({ params }: { params: { id: string } }) {
 
 	const appDoc = getAppDoc(id);
 
-	const dic = require("../../../data/i18n.json");
+	const dic = require("../../../../data/i18n.json");
 
 	const currentPage = {
 		title: appConfig.name,
