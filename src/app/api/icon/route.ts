@@ -1,36 +1,34 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest, NextResponse } from "next/server";
 import * as MuiIcons from "@mui/icons-material";
 import sharp from "sharp";
 import { renderToStaticMarkup } from "react-dom/server";
 import React from "react";
 
 // Check all supported icons at https://mui.com/material-ui/material-icons/
-export default async function handler(
-	req: NextApiRequest,
-	res: NextApiResponse
-) {
-	if (req.method !== "GET") {
-		return res.status(405).json({ message: "Method Not Allowed" });
-	}
-
-	const {
-		iconName = "Home",
-		iconColor = "fff",
-		backgroundColor1,
-		backgroundColor2,
-	} = req.query;
+export async function GET(request: NextRequest) {
+	const searchParams = request.nextUrl.searchParams;
+	const iconName = searchParams.get("iconName") || "Home";
+	const iconColor = searchParams.get("iconColor") || "fff";
+	const backgroundColor1 = searchParams.get("backgroundColor1");
+	const backgroundColor2 = searchParams.get("backgroundColor2");
 
 	if (!iconName || typeof iconName !== "string") {
-		return res.status(400).json({ message: "Invalid icon name" });
+		return NextResponse.json(
+			{ message: "Invalid icon name" },
+			{ status: 400 }
+		);
 	}
 
 	try {
 		const IconComponent = (MuiIcons as any)[iconName];
-		
+
 		if (!IconComponent) {
-			return res.status(404).json({ 
-				message: `Icon "${iconName}" not found. Please check the icon name at https://mui.com/material-ui/material-icons/` 
-			});
+			return NextResponse.json(
+				{
+					message: `Icon "${iconName}" not found. Please check the icon name at https://mui.com/material-ui/material-icons/`,
+				},
+				{ status: 404 }
+			);
 		}
 
 		const svgString = renderToStaticMarkup(
@@ -82,14 +80,21 @@ export default async function handler(
 			.png()
 			.toBuffer();
 
-		res.setHeader("Content-Type", "image/png");
-		res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
-		res.status(200).send(pngBuffer);
+		return new NextResponse(pngBuffer, {
+			status: 200,
+			headers: {
+				"Content-Type": "image/png",
+				"Cache-Control": "public, max-age=31536000, immutable",
+			},
+		});
 	} catch (error) {
 		console.error("Error generating icon:", error);
-		res.status(500).json({
-			message: "Error generating icon",
-			error: (error as Error).message,
-		});
+		return NextResponse.json(
+			{
+				message: "Error generating icon",
+				error: (error as Error).message,
+			},
+			{ status: 500 }
+		);
 	}
 }

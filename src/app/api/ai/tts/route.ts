@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenAI } from "@google/genai";
 import mime from "mime";
 
@@ -74,19 +74,16 @@ function convertToWav(rawData: string, mimeType: string): Buffer {
 	return Buffer.concat([wavHeader, buffer]);
 }
 
-export default async function handler(
-	req: NextApiRequest,
-	res: NextApiResponse
-) {
-	if (req.method !== "POST") {
-		return res.status(405).json({ error: "Method not allowed" });
-	}
-
+export async function POST(request: NextRequest) {
 	try {
-		const { text, voiceName = "Leda", apiKey } = req.body as RequestPayload;
+		const { text, voiceName = "Leda", apiKey } =
+			(await request.json()) as RequestPayload;
 
 		if (!text) {
-			return res.status(400).json({ error: "Text is required" });
+			return NextResponse.json(
+				{ error: "Text is required" },
+				{ status: 400 }
+			);
 		}
 
 		const ai = new GoogleGenAI({
@@ -143,19 +140,23 @@ export default async function handler(
 			throw new Error("Failed to generate audio data");
 		}
 
-		res.setHeader("Content-Type", "audio/wav");
-		res.setHeader(
-			"Content-Disposition",
-			'attachment; filename="audio.wav"'
-		);
-		return res.send(audioBuffer);
+		return new NextResponse(audioBuffer, {
+			status: 200,
+			headers: {
+				"Content-Type": "audio/wav",
+				"Content-Disposition": 'attachment; filename="audio.wav"',
+			},
+		});
 	} catch (error) {
 		console.error("Error in API route:", error);
-		return res.status(500).json({
-			error:
-				error instanceof Error
-					? error.message
-					: "Internal server error",
-		});
+		return NextResponse.json(
+			{
+				error:
+					error instanceof Error
+						? error.message
+						: "Internal server error",
+			},
+			{ status: 500 }
+		);
 	}
 }
