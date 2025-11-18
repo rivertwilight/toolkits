@@ -2,7 +2,7 @@ import React from "react";
 import { Metadata } from "next";
 import { headers } from "next/headers";
 import RootLayoutClient from "./layout-client";
-import siteConfig from "../site.config.js";
+import siteConfig from "../../site.config.js";
 import "./globals.css";
 
 export async function generateMetadata(): Promise<Metadata> {

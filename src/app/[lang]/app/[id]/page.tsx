@@ -4,7 +4,6 @@ import { isCapacitor } from "@/utils/platform";
 import { defaultLocale } from "src/site.config";
 import { getAppConfig, getAppDoc } from "@/utils/appData";
 import getPaths from "@/utils/getPaths";
-import generateSitemap from "@/utils/generateSitemap";
 import AppContainerClient from "./page-client";
 
 export async function generateStaticParams() {
@@ -15,16 +14,6 @@ export async function generateStaticParams() {
 	}
 
 	const paths = ["zh-CN", "en-US"].map((locale) => getPaths(locale)).flat(1);
-
-	generateSitemap(
-		paths.map((p) => {
-			return {
-				url: `/app/` + p.params.id,
-				changefreq: "monthly",
-				priority: 0.7,
-			};
-		})
-	);
 
 	return paths.map((path) => ({
 		id: path.params.id,

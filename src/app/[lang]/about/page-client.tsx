@@ -1,17 +1,17 @@
 "use client";
 
 import React, { useEffect, useState, useMemo } from "react";
-import OutlinedCard from "../../components/OutlinedCard";
+import OutlinedCard from "../../../components/OutlinedCard";
 import { styled } from "@mui/material/styles";
-import StyledMarkdown from "../../components/StyledMarkdown";
+import StyledMarkdown from "../../../components/StyledMarkdown";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import MailIcon from "@mui/icons-material/Mail";
-import { author, repo } from "../../site.config";
-import packageInfo from "../../../package.json";
+import { author, repo } from "../../../site.config";
+import packageInfo from "../../../../package.json";
 import { useAction } from "@/contexts/action";
 import { useLocale } from "@/contexts/locale";
 import Layout from "@/components/Layout";
