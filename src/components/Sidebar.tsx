@@ -59,15 +59,31 @@ const LinkWrapper = ({
 
 	const pathname = usePathname();
 
+	// Extract lang prefix from pathname (e.g., "/en-US/settings" -> "en-US")
+	const AVAILABLE_LOCALES = ["zh-CN", "en-US"];
+	const pathSegments = pathname.split("/").filter(Boolean);
+	const firstSegment = pathSegments[0];
+	const lang = AVAILABLE_LOCALES.includes(firstSegment) ? firstSegment : null;
+
+	// Normalize pathname by removing lang prefix for comparison
+	let normalizedPathname = pathname;
+	if (lang) {
+		const pathWithoutLang = pathname.replace(`/${lang}`, "");
+		normalizedPathname = pathWithoutLang || "/";
+	}
+
+	// Check if the current route matches the href
+	const isActive = normalizedPathname === href || pathname === href;
+
 	return (
-        <Link
-            href={href}
-            target={isExternal ? "_blank" : undefined}
-            style={{ textDecoration: "none", color: "inherit" }}
-            {...props}>
-            {/* @next-codemod-error This Link previously used the now removed `legacyBehavior` prop, and has a child that might not be an anchor. The codemod bailed out of lifting the child props to the Link. Check that the child component does not render an anchor, and potentially move the props manually to Link. */
-            }
-            <ListItemButton
+		<Link
+			href={href}
+			target={isExternal ? "_blank" : undefined}
+			style={{ textDecoration: "none", color: "inherit" }}
+			{...props}
+		>
+			{/* @next-codemod-error This Link previously used the now removed `legacyBehavior` prop, and has a child that might not be an anchor. The codemod bailed out of lifting the child props to the Link. Check that the child component does not render an anchor, and potentially move the props manually to Link. */}
+			<ListItemButton
 				onClick={handleClick}
 				sx={{
 					"&.Mui-selected .MuiListItemText-primary": {
@@ -84,7 +100,7 @@ const LinkWrapper = ({
 					},
 					...sx,
 				}}
-				className={pathname == href ? "Mui-selected" : ""}
+				className={isActive ? "Mui-selected" : ""}
 				key={href}
 			>
 				<ListItemIcon>{Icon}</ListItemIcon>
@@ -103,15 +119,15 @@ const LinkWrapper = ({
 					/>
 				)}
 			</ListItemButton>
-        </Link>
-    );
+		</Link>
+	);
 };
 
 const Sidebar = () => {
 	const { sidebar, setSidebar } = useSidebar();
 
 	const downXs = useMediaQuery((theme: Theme) =>
-		theme.breakpoints.down("md")
+		theme.breakpoints.down("md"),
 	);
 
 	const handleClickNavItem = () => {
