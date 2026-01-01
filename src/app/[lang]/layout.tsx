@@ -6,6 +6,8 @@ import siteConfig from "../../site.config.js";
 import "./globals.css";
 
 export async function generateMetadata(): Promise<Metadata> {
+	const ogImageUrl = `${siteConfig.root}/image/general_og.png`;
+
 	return {
 		metadataBase: new URL(siteConfig.root),
 		title: {
@@ -15,11 +17,48 @@ export async function generateMetadata(): Promise<Metadata> {
 		description: siteConfig.description,
 		keywords: siteConfig.keywords,
 		authors: [{ name: siteConfig.author.name }],
+		openGraph: {
+			type: "website",
+			locale: "en_US",
+			url: siteConfig.root,
+			siteName: siteConfig.appName,
+			title: siteConfig.appName,
+			description: siteConfig.description,
+			images: [
+				{
+					url: ogImageUrl,
+					width: 1200,
+					height: 630,
+					alt: siteConfig.appName,
+				},
+			],
+		},
+		twitter: {
+			card: "summary_large_image",
+			title: siteConfig.appName,
+			description: siteConfig.description,
+			images: [ogImageUrl],
+			creator: siteConfig.author.twitter
+				? siteConfig.author.twitter.replace(/^https?:\/\/(www\.)?(x\.com|twitter\.com)\//, "")
+				: undefined,
+		},
 		icons: {
 			icon: [
-				{ url: "/logo/v3/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-				{ url: "/logo/v3/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-				{ url: "/logo/v3/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+				{
+					url: "/logo/v3/favicon-16x16.png",
+					sizes: "16x16",
+					type: "image/png",
+				},
+				{
+					url: "/logo/v3/favicon-32x32.png",
+					sizes: "32x32",
+					type: "image/png",
+				},
+				{
+					url: "/logo/v3/favicon-96x96.png",
+					sizes: "96x96",
+					type: "image/png",
+				},
 			],
 			apple: [
 				{ url: "/logo/v3/apple-icon-57x57.png", sizes: "57x57" },
@@ -45,7 +84,8 @@ export async function generateMetadata(): Promise<Metadata> {
 		other: {
 			"apple-itunes-app": `app-id=${siteConfig.appstore?.appId || ""}`,
 			"google-play-app": `app-id=${siteConfig.playstore?.appId || ""}`,
-			"google-site-verification": "3yqvRLDwkcm7nwNQ5bSG06I4wQ5ASf23HUtcyZIaz3I",
+			"google-site-verification":
+				"3yqvRLDwkcm7nwNQ5bSG06I4wQ5ASf23HUtcyZIaz3I",
 		},
 		alternates: {
 			canonical: siteConfig.root,
@@ -83,7 +123,10 @@ export default function RootLayout({
 				<meta name="renderer" content="webkit" />
 				<meta name="force-rendering" content="webkit" />
 				<meta httpEquiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-				<link rel="dns-prefetch" href={siteConfig.apiConfig?.url || ""} />
+				<link
+					rel="dns-prefetch"
+					href={siteConfig.apiConfig?.url || ""}
+				/>
 				<link
 					rel="preconnect"
 					href={siteConfig.apiConfig?.url || ""}
