@@ -74,7 +74,7 @@ export async function GET(request: NextRequest) {
 		}
 
 		// Extract the inner content of the icon SVG (paths, etc.)
-		const innerSvgMatch = svgContent.match(/<svg[^>]*>(.*)<\/svg>/s);
+		const innerSvgMatch = svgContent.match(/<svg[^>]*>([\s\S]*)<\/svg>/);
 		const innerSvg = innerSvgMatch ? innerSvgMatch[1] : "";
 
 		const svgBuffer = Buffer.from(`
