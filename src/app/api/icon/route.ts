@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import * as MuiIcons from "@mui/icons-material";
 import sharp from "sharp";
 
 // Check all supported icons at https://mui.com/material-ui/material-icons/
@@ -18,9 +17,18 @@ export async function GET(request: NextRequest) {
 	}
 
 	try {
-		const IconComponent = (MuiIcons as any)[iconName];
+		// Fetch the icon SVG from Material Design Icons CDN
+		// Convert PascalCase to snake_case for Material Icons naming
+		const iconNameSnake = iconName
+			.replace(/([A-Z])/g, "_$1")
+			.toLowerCase()
+			.replace(/^_/, "");
 
-		if (!IconComponent) {
+		// Try to fetch the icon from Google Material Symbols
+		const iconUrl = `https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/${iconNameSnake}/default/24px.svg`;
+		const iconResponse = await fetch(iconUrl);
+
+		if (!iconResponse.ok) {
 			return NextResponse.json(
 				{
 					message: `Icon "${iconName}" not found. Please check the icon name at https://mui.com/material-ui/material-icons/`,
@@ -29,11 +37,15 @@ export async function GET(request: NextRequest) {
 			);
 		}
 
-		// Extract SVG path from MUI icon component
-		// MUI icons expose their path data through the default props
-		const iconElement = IconComponent({});
-		const svgPath = iconElement?.props?.children || "";
-		const svgString = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#${iconColor}">${svgPath}</svg>`;
+		// Get the SVG content and modify fill color
+		let svgContent = await iconResponse.text();
+		// Replace any existing fill attributes or add fill to svg tag
+		svgContent = svgContent.replace(
+			/<svg([^>]*)>/,
+			`<svg$1 fill="#${iconColor}">`
+		);
+
+		const svgString = svgContent;
 
 		let backgroundFill: string;
 
@@ -63,11 +75,15 @@ export async function GET(request: NextRequest) {
 			`;
 		}
 
+		// Extract the inner content of the icon SVG (paths, etc.)
+		const innerSvgMatch = svgContent.match(/<svg[^>]*>(.*)<\/svg>/s);
+		const innerSvg = innerSvgMatch ? innerSvgMatch[1] : "";
+
 		const svgBuffer = Buffer.from(`
 			<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
 				${backgroundFill}
-				<g transform="translate(40, 40) scale(10)">
-					${svgString}
+				<g transform="translate(50, 50) scale(4.16)">
+					${innerSvg}
 				</g>
 			</svg>
 		`);
