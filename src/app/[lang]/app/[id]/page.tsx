@@ -2,6 +2,7 @@ import React from "react";
 import { Metadata } from "next";
 import { isCapacitor } from "@/utils/platform";
 import { defaultLocale } from "src/site.config";
+import siteConfig from "../../../../site.config.js";
 import { getAppConfig, getAppDoc } from "@/utils/appData.server";
 import getPaths from "@/utils/getPaths";
 import AppContainerClient from "./page-client";
@@ -36,15 +37,54 @@ export async function generateMetadata({
 			"freeSize",
 			"platform",
 			"keywords",
+			"icon",
 		],
 		locale: locale,
 	});
 
+	const appTitle = appConfig.name;
+	const appDescription =
+		appConfig.seoOptimizedDescription || appConfig.description || "";
+	const appUrl = `${siteConfig.root}/app/${id}`;
+
+	// Use app icon if available, otherwise fall back to general OG image
+	const ogImageUrl =
+		appConfig.icon && !appConfig.icon.startsWith("/api/")
+			? `${siteConfig.root}${appConfig.icon}`
+			: `${siteConfig.root}/image/general_og.png`;
+
 	return {
-		title: appConfig.name,
-		description:
-			appConfig.seoOptimizedDescription || appConfig.description || "",
+		title: appTitle,
+		description: appDescription,
 		keywords: appConfig.keywords,
+		openGraph: {
+			type: "website",
+			locale: "en_US",
+			url: appUrl,
+			siteName: siteConfig.appName,
+			title: appTitle,
+			description: appDescription,
+			images: [
+				{
+					url: ogImageUrl,
+					width: 1200,
+					height: 630,
+					alt: appTitle,
+				},
+			],
+		},
+		twitter: {
+			card: "summary_large_image",
+			title: appTitle,
+			description: appDescription,
+			images: [ogImageUrl],
+			creator: siteConfig.author.twitter
+				? siteConfig.author.twitter.replace(
+						/^https?:\/\/(www\.)?(x\.com|twitter\.com)\//,
+						"",
+					)
+				: undefined,
+		},
 	};
 }
 
