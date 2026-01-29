@@ -59,13 +59,13 @@ const appImportList: Record<string, ComponentType> = {
 		() => import("../apps/fuel_consumption_calculator"),
 		{
 			ssr: false,
-		}
+		},
 	),
 	length_unit_convertor: dynamic(
 		() => import("../apps/length_unit_convertor"),
 		{
 			ssr: false,
-		}
+		},
 	),
 	fake_pornhub_logo: dynamic(() => import("../apps/fake_pornhub_logo"), {
 		ssr: false,
@@ -115,14 +115,11 @@ const appImportList: Record<string, ComponentType> = {
 	icon_generator: dynamic(() => import("../apps/icon_generator"), {
 		ssr: false,
 	}),
-	chatai: dynamic(() => import("../apps/chatai"), {
-		ssr: false,
-	}),
 	jyutping_converter: dynamic(
 		() => import("../apps/jyutping_converter/index"),
 		{
 			ssr: false,
-		}
+		},
 	),
 	num2roman: dynamic(() => import("../apps/num2roman"), {
 		ssr: false,
@@ -140,7 +137,7 @@ const appImportList: Record<string, ComponentType> = {
 		() => import("../apps/radio_signal_location_checker"),
 		{
 			ssr: false,
-		}
+		},
 	),
 	convert_timestamp: dynamic(() => import("../apps/convert_timestamp"), {
 		ssr: false,
