@@ -24,9 +24,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({
 	params,
 }: {
-	params: { id: string };
+	params: Promise<{ id: string; lang: string }>;
 }): Promise<Metadata> {
-	const { id } = params;
+	const { id } = await params;
 	const locale = defaultLocale;
 
 	const appConfig = getAppConfig(id, {
@@ -88,8 +88,12 @@ export async function generateMetadata({
 	};
 }
 
-export default async function AppPage({ params }: { params: { id: string } }) {
-	const { id } = params;
+export default async function AppPage({
+	params,
+}: {
+	params: Promise<{ id: string; lang: string }>;
+}) {
+	const { id } = await params;
 	const locale = defaultLocale;
 
 	const appConfig = getAppConfig(id, {
