@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import FormControl from "@mui/material/FormControl";
 import Box from "@mui/material/Box";
@@ -22,11 +22,10 @@ import { useLocale } from "@/contexts/locale";
 
 const Shortcuts = ({ kwd }: { kwd: string }) => {
 	return (
-        <List>
-            <Link href={"https://www.google.com/search?q=" + kwd}>
-                {/* @next-codemod-error This Link previously used the now removed `legacyBehavior` prop, and has a child that might not be an anchor. The codemod bailed out of lifting the child props to the Link. Check that the child component does not render an anchor, and potentially move the props manually to Link. */
-                }
-                <ListItem>
+		<List>
+			<Link href={"https://www.google.com/search?q=" + kwd}>
+				{/* @next-codemod-error This Link previously used the now removed `legacyBehavior` prop, and has a child that might not be an anchor. The codemod bailed out of lifting the child props to the Link. Check that the child component does not render an anchor, and potentially move the props manually to Link. */}
+				<ListItem>
 					<ListItemButton>
 						<ListItemIcon>
 							<GoogleIcon />
@@ -34,11 +33,10 @@ const Shortcuts = ({ kwd }: { kwd: string }) => {
 						<ListItemText primary={`使用谷歌搜索"${kwd}"`} />
 					</ListItemButton>
 				</ListItem>
-            </Link>
-            <Link href={"https://cn.bing.com/search?q=" + kwd}>
-                {/* @next-codemod-error This Link previously used the now removed `legacyBehavior` prop, and has a child that might not be an anchor. The codemod bailed out of lifting the child props to the Link. Check that the child component does not render an anchor, and potentially move the props manually to Link. */
-                }
-                <ListItem>
+			</Link>
+			<Link href={"https://cn.bing.com/search?q=" + kwd}>
+				{/* @next-codemod-error This Link previously used the now removed `legacyBehavior` prop, and has a child that might not be an anchor. The codemod bailed out of lifting the child props to the Link. Check that the child component does not render an anchor, and potentially move the props manually to Link. */}
+				<ListItem>
 					<ListItemButton>
 						<ListItemIcon>
 							<SearchSharpIcon />
@@ -46,11 +44,10 @@ const Shortcuts = ({ kwd }: { kwd: string }) => {
 						<ListItemText primary={`使用必应搜索"${kwd}"`} />
 					</ListItemButton>
 				</ListItem>
-            </Link>
-            <Link href={"https://www.baidu.com/#ie=UTF-8&wd=" + kwd}>
-                {/* @next-codemod-error This Link previously used the now removed `legacyBehavior` prop, and has a child that might not be an anchor. The codemod bailed out of lifting the child props to the Link. Check that the child component does not render an anchor, and potentially move the props manually to Link. */
-                }
-                <ListItem>
+			</Link>
+			<Link href={"https://www.baidu.com/#ie=UTF-8&wd=" + kwd}>
+				{/* @next-codemod-error This Link previously used the now removed `legacyBehavior` prop, and has a child that might not be an anchor. The codemod bailed out of lifting the child props to the Link. Check that the child component does not render an anchor, and potentially move the props manually to Link. */}
+				<ListItem>
 					<ListItemButton>
 						<ListItemIcon>
 							<SearchSharpIcon />
@@ -58,9 +55,9 @@ const Shortcuts = ({ kwd }: { kwd: string }) => {
 						<ListItemText primary={`使用百度搜索"${kwd}"`} />
 					</ListItemButton>
 				</ListItem>
-            </Link>
-        </List>
-    );
+			</Link>
+		</List>
+	);
 };
 
 const SearchResult = ({ result = [], kwd }: any) => {
@@ -70,7 +67,7 @@ const SearchResult = ({ result = [], kwd }: any) => {
 		if (e.keyCode === 38 || e.keyCode === 40) {
 			e.preventDefault();
 			setSelectedItem(
-				e.keyCode === 38 ? selectedItem - 1 : selectedItem + 1
+				e.keyCode === 38 ? selectedItem - 1 : selectedItem + 1,
 			);
 		} else if (e.keyCode === 13) {
 			e.preventDefault();
@@ -118,7 +115,7 @@ type Procedure = (...args: any[]) => void;
 
 const debounce = <F extends Procedure>(
 	func: F,
-	timeout: number = 300
+	timeout: number = 300,
 ): ((...args: Parameters<F>) => void) => {
 	let timer: NodeJS.Timeout;
 	return (...args: Parameters<F>) => {
@@ -158,7 +155,7 @@ const Search = ({ appData: propAppData }: SearchProps) => {
 			revalidateOnFocus: false,
 			revalidateOnReconnect: false,
 			refreshInterval: 24 * 60 * 60 * 1000, // 24 hours
-		}
+		},
 	);
 
 	// Update activeAppData when fetchedAppData is available
@@ -172,7 +169,7 @@ const Search = ({ appData: propAppData }: SearchProps) => {
 		() =>
 			activeAppData?.filter((app: AppData) => app.locale === locale) ||
 			[],
-		[activeAppData, locale]
+		[activeAppData, locale],
 	);
 
 	useEffect(() => {
@@ -247,7 +244,7 @@ const Search = ({ appData: propAppData }: SearchProps) => {
 									theme.palette.mode === "light"
 										? theme.palette.common.black
 										: theme.palette.common.white,
-									0.15
+									0.15,
 								)}`,
 						},
 					}}
