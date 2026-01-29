@@ -152,7 +152,7 @@ const Search = ({ appData: propAppData }: SearchProps) => {
 
 	// Fetch app data if not provided through props
 	const { data: fetchedAppData } = useSWR(
-		propAppData ? null : "/data/apps.json",
+		propAppData ? null : "/api/apps",
 		fetcher,
 		{
 			revalidateOnFocus: false,

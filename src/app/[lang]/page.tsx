@@ -62,22 +62,6 @@ export default async function HomePage() {
 
 	const dic = require("../../data/i18n.json");
 
-	// Write the full app data to public JSON file during build
-	if (true) {
-		const fs = require("fs");
-		const path = require("path");
-		const fullAppData = getAllApps(true);
-
-		// Ensure the public/data directory exists
-		const publicDir = path.join(process.cwd(), "public", "data");
-		fs.mkdirSync(publicDir, { recursive: true });
-
-		fs.writeFileSync(
-			path.join(publicDir, "apps.json"),
-			JSON.stringify(fullAppData),
-		);
-	}
-
 	const currentPage = {
 		title: new translator(dic, locale).use("homePage.meta.title"),
 		description: new translator(dic, locale).use(
