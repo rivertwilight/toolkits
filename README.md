@@ -1,7 +1,7 @@
 <div align="center">
 
 <a href="https://geekits.ygeeker.com">
-  <img width="180" src="https://geekits.ygeeker.com/logo/v3/rounded.png">
+  <img width="128" src="https://geekits.ygeeker.com/logo/v3/rounded.png">
 </a>
 
 <h1 align="center">Geekits</h1>
