@@ -13,7 +13,7 @@ import Text from "@/components/i18n";
 import { useAction } from "@/contexts/action";
 import MainSection from "@/components/MainSection";
 import Layout from "@/components/Layout";
-import GoogleAnalytics from "@/components/GoogleAnalytics";
+
 import { useLocale } from "@/contexts/locale";
 import { store as frameStore } from "@/utils/Data/frameState";
 
@@ -171,11 +171,7 @@ export default function FeedbackClient({
 					</Box>
 				</MainSection>
 			</Layout>
-			{process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS && (
-				<GoogleAnalytics
-					ga_id={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}
-				/>
-			)}
+
 		</Text>
 	);
 }

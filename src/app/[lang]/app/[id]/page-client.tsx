@@ -15,7 +15,7 @@ import appImportList from "@/utils/appEntry";
 import { getAppConfig } from "@/utils/appData";
 import { store as frameStore } from "@/utils/Data/frameState";
 import Text from "@/components/i18n";
-import GoogleAnalytics from "@/components/GoogleAnalytics";
+
 import Layout from "@/components/Layout";
 
 const drawerWidth: number = 260;
@@ -209,11 +209,7 @@ export default function AppContainerClient({
 					</RightDrawer>
 				</Root>
 			</Layout>
-			{process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS && (
-				<GoogleAnalytics
-					ga_id={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}
-				/>
-			)}
+
 		</Text>
 	);
 }

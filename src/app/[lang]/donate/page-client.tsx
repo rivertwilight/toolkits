@@ -43,7 +43,7 @@ import {
 import Text from "@/components/i18n";
 import MainSection from "@/components/MainSection";
 import Layout from "@/components/Layout";
-import GoogleAnalytics from "@/components/GoogleAnalytics";
+
 import { useLocale } from "@/contexts/locale";
 import Placeholder from "@/components/Placeholder";
 import { store as frameStore } from "@/utils/Data/frameState";
@@ -520,9 +520,7 @@ export default function DonateClient({
 					</Typography>
 				</MainSection>
 			</Layout>
-			{process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS && (
-				<GoogleAnalytics ga_id={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
-			)}
+
 		</Text>
 	);
 }

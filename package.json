@@ -50,6 +50,7 @@
 		"@mui/icons-material": "^7.3.5",
 		"@mui/material": "^7.3.5",
 		"@mui/styles": "^6.4.8",
+		"@next/third-parties": "^16.1.6",
 		"@react-email/components": "^0.0.22",
 		"@stripe/react-stripe-js": "^2.9.0",
 		"@stripe/stripe-js": "^4.10.0",

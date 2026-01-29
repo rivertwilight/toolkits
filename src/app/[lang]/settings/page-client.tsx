@@ -15,7 +15,7 @@ import { useColorMode } from "@/contexts/colorMode";
 import { Preferences } from "@capacitor/preferences";
 import MainSection from "@/components/MainSection";
 import Layout from "@/components/Layout";
-import GoogleAnalytics from "@/components/GoogleAnalytics";
+
 import { useLocale } from "@/contexts/locale";
 import { store as frameStore } from "@/utils/Data/frameState";
 
@@ -188,11 +188,7 @@ export default function SettingsClient({
 					</Box>
 				</MainSection>
 			</Layout>
-			{process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS && (
-				<GoogleAnalytics
-					ga_id={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}
-				/>
-			)}
+
 		</Text>
 	);
 }

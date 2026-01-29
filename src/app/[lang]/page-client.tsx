@@ -14,7 +14,7 @@ import { Theme, useMediaQuery } from "@mui/material";
 import MainSection from "@/components/MainSection";
 import Layout from "@/components/Layout";
 import Text from "@/components/i18n";
-import GoogleAnalytics from "@/components/GoogleAnalytics";
+
 import { store as frameStore } from "@/utils/Data/frameState";
 
 export default function HomePageClient({
@@ -100,11 +100,7 @@ export default function HomePageClient({
 					</Grid>
 				</MainSection>
 			</Layout>
-			{process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS && (
-				<GoogleAnalytics
-					ga_id={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}
-				/>
-			)}
+
 		</Text>
 	);
 }

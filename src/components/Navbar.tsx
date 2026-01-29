@@ -67,9 +67,9 @@ function AppsMenu() {
 			link: "https://www.ygeeker.com/clipmemo",
 		},
 		{
-			name: "Dali",
-			icon: "https://www.ygeeker.com/image/product/dali.png",
-			link: "https://www.ygeeker.com/dali",
+			name: "Mono Card",
+			icon: "https://ygeeker.com/_next/image?url=%2Fimage%2Fproduct%2Fmonocard.png&w=640&q=75",
+			link: "https://mono.cards",
 		},
 		{
 			name: "I Didn't",
@@ -260,10 +260,9 @@ export default (props: {
 								alignItems: "center",
 							}}
 						>
-							<Box
-								component={Link}
+							<Link
 								href="/"
-								sx={{
+								style={{
 									textDecoration: "none",
 									color: "inherit",
 								}}
@@ -279,7 +278,7 @@ export default (props: {
 								>
 									{siteConfig.appName}
 								</Typography>
-							</Box>
+							</Link>
 							<Typography
 								id="navbar-localTitle"
 								color="primary"

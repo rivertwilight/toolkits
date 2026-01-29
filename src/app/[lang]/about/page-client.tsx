@@ -16,7 +16,7 @@ import { useAction } from "@/contexts/action";
 import { useLocale } from "@/contexts/locale";
 import Layout from "@/components/Layout";
 import Text from "@/components/i18n";
-import GoogleAnalytics from "@/components/GoogleAnalytics";
+
 import { store as frameStore } from "@/utils/Data/frameState";
 
 const PREFIX = "about";
@@ -146,9 +146,7 @@ export default function AboutClient({
 					</Typography>
 				</Root>
 			</Layout>
-			{process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS && (
-				<GoogleAnalytics ga_id={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
-			)}
+
 		</Text>
 	);
 }

@@ -15,7 +15,7 @@ import useNotifications from "@/utils/Hooks/useNotification";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import Layout from "@/components/Layout";
 import Text from "@/components/i18n";
-import GoogleAnalytics from "@/components/GoogleAnalytics";
+
 import { useLocale } from "@/contexts/locale";
 import { store as frameStore } from "@/utils/Data/frameState";
 
@@ -107,11 +107,7 @@ export default function ChangelogClient({
 					</Box>
 				</Box>
 			</Layout>
-			{process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS && (
-				<GoogleAnalytics
-					ga_id={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}
-				/>
-			)}
+
 		</Text>
 	);
 }
