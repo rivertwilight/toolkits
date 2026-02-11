@@ -4,7 +4,7 @@
   <img width="128" src="https://geekits.ygeeker.com/logo/v3/rounded.png">
 </a>
 
-<h1 align="center">Geekits</h1>
+<h1 align="center">Toolkits</h1>
 
 [简体中文](./README.zh-CN.md) | **English**
 

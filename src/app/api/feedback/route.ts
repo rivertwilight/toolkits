@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
 			device: body.device,
 			system: body.system,
 			appIdentifier: body.appIdentifier,
-			appName: body.appName || "Geekits",
+			appName: body.appName || "Toolkits",
 			sourceUrl: body.sourceUrl,
 		};
 

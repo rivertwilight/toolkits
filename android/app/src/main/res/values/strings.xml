@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Geekits</string>
-    <string name="title_activity_main">Geekits</string>
+    <string name="app_name">Toolkits</string>
+    <string name="title_activity_main">Toolkits</string>
     <string name="package_name">com.ygeeker.geekits</string>
     <string name="custom_url_scheme">com.ygeeker.geekits</string>
 </resources>

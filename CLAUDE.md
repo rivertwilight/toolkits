@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Geekits is a multilingual web toolbox ("digital toolbox to solve paper-cuts in daily life") built with Next.js App Router. It hosts 44+ independent tool apps (e.g., color picker, GIF maker, base64 converter) in a modular architecture. Also ships as native iOS/Android apps via Capacitor.
+Toolkits is a multilingual web toolbox ("digital toolbox to solve paper-cuts in daily life") built with Next.js App Router. It hosts 44+ independent tool apps (e.g., color picker, GIF maker, base64 converter) in a modular architecture. Also ships as native iOS/Android apps via Capacitor.
 
 ## Commands
 

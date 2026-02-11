@@ -1,8 +1,8 @@
 module.exports = {
-	appName: "Geekits",
-	description: "Geekits 是一个工具集合，旨在为开发者提供便捷的工具和资源。",
+	appName: "Toolkits",
+	description: "Toolkits 是一个工具集合，旨在为开发者提供便捷的工具和资源。",
 	keywords: [
-		"Geekits",
+		"Toolkits",
 		"云极客工具",
 		"YGeeker",
 		"Ygktool",
@@ -14,7 +14,7 @@ module.exports = {
 		email: "contact@rene.wang",
 		twitter: "https://x.com/rea1DonandTrump",
 	},
-	repo: "https://github.com/rivertwilight/geekits",
+	repo: "https://github.com/rivertwilight/toolkits",
 	root: "https://geekits.ygeeker.com",
 	releaseNotesUrl: "https://www.ygeeker.com/support/geekits/release-notes",
 	apiConfig: {

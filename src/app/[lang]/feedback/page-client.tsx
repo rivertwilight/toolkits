@@ -66,7 +66,7 @@ export default function FeedbackClient({
 			contact: contact,
 			device: window.navigator.platform,
 			system: window.navigator.userAgent,
-			appIdentifier: "Geekits Web",
+			appIdentifier: "Toolkits Web",
 			sourceUrl: window.location.href,
 		};
 

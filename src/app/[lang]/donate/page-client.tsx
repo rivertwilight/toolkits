@@ -511,12 +511,12 @@ export default function DonateClient({
 					</Box>
 
 					<Typography variant="body2" textAlign="center" gutterBottom>
-						感谢您对我的开源项目的关注。Geekits
+						感谢您对我的开源项目的关注。Toolkits
 						已经开发了五年多，这期间我投入了大量的时间、精力和金钱，包括购买域名和服务器。这一切对我来说是非常昂贵的。但是，我仍然坚守着对这个项目的热爱。
 						你可以通过捐赠来支持我，帮助我继续开发这个项目，使其对更多人有所帮助。非常感谢你的支持！
 						<br />
 						<br />
-						所有的收益都将用于开发、维护、运行 Geekits。
+						所有的收益都将用于开发、维护、运行 Toolkits。
 					</Typography>
 				</MainSection>
 			</Layout>

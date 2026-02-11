@@ -2,7 +2,7 @@
 
 _Last Modified: 2024-04-07_
 
-This Agreement is a legal agreement between you and Geekits (hereinafter referred to as "we") regarding Geekits (hereinafter referred to as "this website").
+This Agreement is a legal agreement between you and Toolkits (hereinafter referred to as "we") regarding Toolkits (hereinafter referred to as "this website").
 
 When using this website, users must comply with the relevant laws of the country or region.
 

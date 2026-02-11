@@ -76,7 +76,7 @@ freeSize: true
 
 除工具文档之外，App 所有的需要翻译的字段都位于`/src/data/i18n/i18n.xlsx`这个表格中。你可以打开自由编辑。
 
-编辑完成后，请先[提交 Pull Request](https://github.com/RiverTwilight/Geekits/pulls)，代码审查完后，你可以运行`yarn run i18n:update`命令输出 json 格式文件。
+编辑完成后，请先[提交 Pull Request](https://github.com/RiverTwilight/Toolkits/pulls)，代码审查完后，你可以运行`yarn run i18n:update`命令输出 json 格式文件。
 
 目前需要翻译的语言有：
 

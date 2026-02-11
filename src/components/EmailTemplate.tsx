@@ -61,7 +61,7 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
 						</ReactMarkdown>
 					</Section>
 					<Text style={footer}>
-						This email was sent from the Geekits feedback system.
+						This email was sent from the Toolkits feedback system.
 					</Text>
 				</Container>
 			</Body>
