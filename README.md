@@ -52,6 +52,6 @@ npm run start:container
 
 Apache License Version 2.0.
 
-Copyright © 2019 YGeeker
+Copyright © 2019 Rene Wang
 
 All rights reserved.

@@ -54,8 +54,8 @@ npm run start:container
 
 ## 许可
 
-CC-BY-4.0
+Apache License Version 2.0.
 
-Copyright © 2019 YGeeker
+Copyright © 2019 Rene Wang
 
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FRiverTwilight%2FYgkTool.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FRiverTwilight%2FYgkTool?ref=badge_large)
+All rights reserved.
