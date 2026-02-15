@@ -106,6 +106,8 @@ export default function RootLayout({
 }: {
 	children: React.ReactNode;
 }) {
+	const dic = JSON.stringify(require("../../data/i18n.json"));
+
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<head>
@@ -138,7 +140,7 @@ export default function RootLayout({
 				/>
 			</head>
 			<body>
-				<RootLayoutClient>{children}</RootLayoutClient>
+				<RootLayoutClient dic={dic}>{children}</RootLayoutClient>
 				{process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS && (
 					<GoogleAnalytics
 						gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}

@@ -23,7 +23,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { AttachMoney, Coffee, Fastfood, LocalBar } from "@mui/icons-material";
-import { useAction } from "@/contexts/action";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -42,11 +41,8 @@ import {
 } from "@stripe/react-stripe-js";
 import Text from "@/components/i18n";
 import MainSection from "@/components/MainSection";
-import Layout from "@/components/Layout";
-
-import { useLocale } from "@/contexts/locale";
 import Placeholder from "@/components/Placeholder";
-import { store as frameStore } from "@/utils/Data/frameState";
+import { usePageTitle } from "@/utils/Hooks/usePageTitle";
 
 const FREE_DONATION_WAYS = [
 	{
@@ -406,121 +402,94 @@ const StripePaymentForm = () => {
 
 export default function DonateClient({
 	currentPage,
-	dic,
-	locale,
 }: {
 	currentPage: any;
-	dic: string;
-	locale: string;
 }) {
-	const { setAction } = useAction();
-	const { locale: activeLocale } = useLocale();
-	const [framed, setFramed] = useState<Boolean>(true);
-
-	useEffect(() => {
-		setAction(null);
-	}, [setAction]);
-
-	useEffect(() => {
-		const unsubscribe = frameStore.subscribe(() =>
-			setFramed(frameStore.getState().value)
-		);
-		return () => unsubscribe();
-	}, []);
-
-	const localizedDic = useMemo(
-		() => JSON.parse(dic)[activeLocale],
-		[activeLocale, dic]
-	);
+	usePageTitle(currentPage.title);
 
 	return (
-		<Text dictionary={localizedDic || {}} language={activeLocale}>
-			<Layout appData={[]} currentPage={currentPage} enableFrame={framed}>
-				<MainSection>
-					<Alert severity="info">
-						以下方式都是免费的，你只需要动动手指，我和你都能从中获益。
-					</Alert>
-					<Grid
-						spacing={{ xs: 1, md: 2 }}
-						sx={{ paddingY: (theme) => theme.spacing(1) }}
-						container
-					>
-						{FREE_DONATION_WAYS.map((way) => (
-							<ProductItem key={way.title} {...way} />
+		<MainSection>
+			<Alert severity="info">
+				以下方式都是免费的，你只需要动动手指，我和你都能从中获益。
+			</Alert>
+			<Grid
+				spacing={{ xs: 1, md: 2 }}
+				sx={{ paddingY: (theme) => theme.spacing(1) }}
+				container
+			>
+				{FREE_DONATION_WAYS.map((way) => (
+					<ProductItem key={way.title} {...way} />
+				))}
+			</Grid>
+
+			<br />
+			<br />
+
+			<Typography variant="h6">
+				<Text k="donation.paid.title" />
+			</Typography>
+
+			<br />
+
+			<Grid
+				spacing={{ xs: 1, md: 2 }}
+				sx={{ paddingY: (theme) => theme.spacing(1) }}
+				container
+			>
+				{PAIED_DONATION_WAYS.map((way) => (
+					<PaidOptionItem key={way.title} {...way} />
+				))}
+			</Grid>
+
+			<br />
+			<br />
+
+			<Typography variant="h6">捐赠记录</Typography>
+
+			<br />
+
+			<TableContainer component={OutlinedCard}>
+				<Table aria-label="simple table">
+					<TableHead>
+						<TableRow>
+							<TableCell>方式</TableCell>
+							<TableCell>金额</TableCell>
+							<TableCell>捐赠者</TableCell>
+						</TableRow>
+					</TableHead>
+					<TableBody>
+						{DONATION_HISTORY.map((row, i) => (
+							<TableRow key={i}>
+								<TableCell>{row.method}</TableCell>
+								<TableCell>{row.amount}</TableCell>
+								<TableCell>{row.donator}</TableCell>
+							</TableRow>
 						))}
-					</Grid>
+					</TableBody>
+				</Table>
+				<Box
+					display={"flex"}
+					width={"full"}
+					justifyContent={"center"}
+					paddingY={2}
+				>
+					<Button LinkComponent={Link} href="mailto:rene@ygeeker.com">
+						问题反馈
+					</Button>
+				</Box>
+			</TableContainer>
+			<Box height="200px">
+				<Placeholder illustrationUrl="/illustration/undraw_fatherhood_-7-i19.svg" />
+			</Box>
 
-					<br />
-					<br />
-
-					<Typography variant="h6">
-						<Text k="donation.paid.title" />
-					</Typography>
-
-					<br />
-
-					<Grid
-						spacing={{ xs: 1, md: 2 }}
-						sx={{ paddingY: (theme) => theme.spacing(1) }}
-						container
-					>
-						{PAIED_DONATION_WAYS.map((way) => (
-							<PaidOptionItem key={way.title} {...way} />
-						))}
-					</Grid>
-
-					<br />
-					<br />
-
-					<Typography variant="h6">捐赠记录</Typography>
-
-					<br />
-
-					<TableContainer component={OutlinedCard}>
-						<Table aria-label="simple table">
-							<TableHead>
-								<TableRow>
-									<TableCell>方式</TableCell>
-									<TableCell>金额</TableCell>
-									<TableCell>捐赠者</TableCell>
-								</TableRow>
-							</TableHead>
-							<TableBody>
-								{DONATION_HISTORY.map((row, i) => (
-									<TableRow key={i}>
-										<TableCell>{row.method}</TableCell>
-										<TableCell>{row.amount}</TableCell>
-										<TableCell>{row.donator}</TableCell>
-									</TableRow>
-								))}
-							</TableBody>
-						</Table>
-						<Box
-							display={"flex"}
-							width={"full"}
-							justifyContent={"center"}
-							paddingY={2}
-						>
-							<Button LinkComponent={Link} href="mailto:rene@ygeeker.com">
-								问题反馈
-							</Button>
-						</Box>
-					</TableContainer>
-					<Box height="200px">
-						<Placeholder illustrationUrl="/illustration/undraw_fatherhood_-7-i19.svg" />
-					</Box>
-
-					<Typography variant="body2" textAlign="center" gutterBottom>
-						感谢您对我的开源项目的关注。Toolkits
-						已经开发了五年多，这期间我投入了大量的时间、精力和金钱，包括购买域名和服务器。这一切对我来说是非常昂贵的。但是，我仍然坚守着对这个项目的热爱。
-						你可以通过捐赠来支持我，帮助我继续开发这个项目，使其对更多人有所帮助。非常感谢你的支持！
-						<br />
-						<br />
-						所有的收益都将用于开发、维护、运行 Toolkits。
-					</Typography>
-				</MainSection>
-			</Layout>
-
-		</Text>
+			<Typography variant="body2" textAlign="center" gutterBottom>
+				感谢您对我的开源项目的关注。Toolkits
+				已经开发了五年多，这期间我投入了大量的时间、精力和金钱，包括购买域名和服务器。这一切对我来说是非常昂贵的。但是，我仍然坚守着对这个项目的热爱。
+				你可以通过捐赠来支持我，帮助我继续开发这个项目，使其对更多人有所帮助。非常感谢你的支持！
+				<br />
+				<br />
+				所有的收益都将用于开发、维护、运行 Toolkits。
+			</Typography>
+		</MainSection>
 	);
 }

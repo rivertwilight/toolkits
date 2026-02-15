@@ -109,8 +109,6 @@ export default async function AppPage({
 
 	const appDoc = getAppDoc(id);
 
-	const dic = require("../../../../data/i18n.json");
-
 	const currentPage = {
 		title: appConfig.name,
 		keywords: appConfig.keywords,
@@ -124,7 +122,6 @@ export default async function AppPage({
 			appConfig={appConfig}
 			appDoc={appDoc}
 			currentPage={currentPage}
-			dic={JSON.stringify(dic)}
 		/>
 	);
 }

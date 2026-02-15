@@ -23,11 +23,5 @@ export default function AboutPage() {
 		path: "/about",
 	};
 
-	return (
-		<AboutClient
-			currentPage={currentPage}
-			dic={JSON.stringify(dic)}
-			locale={defaultLocale}
-		/>
-	);
+	return <AboutClient currentPage={currentPage} />;
 }

@@ -77,8 +77,6 @@ export default async function HomePage() {
 		<HomePageClient
 			appData={filteredAppData}
 			currentPage={currentPage}
-			dic={JSON.stringify(dic)}
-			locale={locale}
 		/>
 	);
 }

@@ -10,18 +10,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function FeedbackPage() {
-	const dic = require("../../../data/i18n.json");
-
 	const currentPage = {
 		title: "反馈",
 		path: "/feedback",
 	};
 
-	return (
-		<FeedbackClient
-			currentPage={currentPage}
-			dic={JSON.stringify(dic)}
-			locale={defaultLocale}
-		/>
-	);
+	return <FeedbackClient currentPage={currentPage} />;
 }

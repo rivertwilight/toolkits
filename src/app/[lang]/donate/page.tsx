@@ -14,19 +14,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function DonatePage() {
-	const dic = require("../../../data/i18n.json");
-
 	const currentPage = {
 		title: "捐赠",
 		description: "",
 		path: "/donate",
 	};
 
-	return (
-		<DonateClient
-			currentPage={currentPage}
-			dic={JSON.stringify(dic)}
-			locale={defaultLocale}
-		/>
-	);
+	return <DonateClient currentPage={currentPage} />;
 }

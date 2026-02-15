@@ -1,39 +1,30 @@
 "use client";
 
-import React, { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { useAction } from "@/contexts/action";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Text from "@/components/i18n";
 import { isWeb } from "@/utils/platform";
-import { useTheme } from "@mui/material/styles";
 import { useColorMode } from "@/contexts/colorMode";
 import { Preferences } from "@capacitor/preferences";
 import MainSection from "@/components/MainSection";
-import Layout from "@/components/Layout";
-
 import { useLocale } from "@/contexts/locale";
-import { store as frameStore } from "@/utils/Data/frameState";
+import { usePageTitle } from "@/utils/Hooks/usePageTitle";
 
 export default function SettingsClient({
 	currentPage,
-	dic,
-	locale,
 }: {
 	currentPage: any;
-	dic: string;
-	locale: string;
 }) {
-	const { setAction } = useAction();
 	const [language, setLanguage] = useState("auto");
 	const { mode, setMode } = useColorMode();
-	const theme = useTheme();
 	const { locale: activeLocale } = useLocale();
-	const [framed, setFramed] = useState<Boolean>(true);
+
+	usePageTitle(currentPage.title);
 
 	const handleLanguageChange = async (event: SelectChangeEvent) => {
 		const newLocale = event.target.value as string;
@@ -63,17 +54,6 @@ export default function SettingsClient({
 	};
 
 	useEffect(() => {
-		setAction(null);
-	}, [setAction]);
-
-	useEffect(() => {
-		const unsubscribe = frameStore.subscribe(() =>
-			setFramed(frameStore.getState().value)
-		);
-		return () => unsubscribe();
-	}, []);
-
-	useEffect(() => {
 		const loadStoredPreferences = async () => {
 			try {
 				const { value: storedLocale } = await Preferences.get({
@@ -90,105 +70,95 @@ export default function SettingsClient({
 		loadStoredPreferences();
 	}, []);
 
-	const localizedDic = useMemo(
-		() => JSON.parse(dic)[activeLocale],
-		[activeLocale, dic]
-	);
-
 	return (
-		<Text dictionary={localizedDic || {}} language={activeLocale}>
-			<Layout appData={[]} currentPage={currentPage} enableFrame={framed}>
-				<MainSection>
-					<Box
-						sx={{
-							display: "flex",
-							flexDirection: "column",
-							gap: 3,
-							width: "100%",
-						}}
-					>
-						{/* Language Setting */}
-						<Box
-							display={"flex"}
-							sx={{
-								width: "100%",
-							}}
-							justifyContent={"space-between"}
-							alignItems={"center"}
+		<MainSection>
+			<Box
+				sx={{
+					display: "flex",
+					flexDirection: "column",
+					gap: 3,
+					width: "100%",
+				}}
+			>
+				{/* Language Setting */}
+				<Box
+					display={"flex"}
+					sx={{
+						width: "100%",
+					}}
+					justifyContent={"space-between"}
+					alignItems={"center"}
+				>
+					<Typography variant="body1">
+						<Text k="settings.language.title" />
+					</Typography>
+
+					<Box sx={{ flexGrow: 1 }} />
+
+					<FormControl sx={{ width: 180 }}>
+						<InputLabel id="settings-language-label">
+							<Text k="settings.language.title" />
+						</InputLabel>
+						<Select
+							labelId="settings-language-label"
+							id="settings-language"
+							name="language"
+							value={language}
+							onChange={handleLanguageChange}
+							label={<Text k="settings.language.title" />}
 						>
-							<Typography variant="body1">
-								<Text k="settings.language.title" />
-							</Typography>
+							<MenuItem value={"auto"}>
+								<Text k="settings.language.auto" />
+							</MenuItem>
+							<MenuItem value={"zh-CN"}>
+								<Text k="settings.language.zh_cn" />
+							</MenuItem>
+							<MenuItem value={"en-US"}>
+								<Text k="settings.language.en_us" />
+							</MenuItem>
+						</Select>
+					</FormControl>
+				</Box>
 
-							<Box sx={{ flexGrow: 1 }} />
+				{/* Theme Setting */}
+				<Box
+					display={"flex"}
+					sx={{
+						width: "100%",
+					}}
+					justifyContent={"space-between"}
+					alignItems={"center"}
+				>
+					<Typography variant="body1">
+						<Text k="settings.theme.title" />
+					</Typography>
 
-							<FormControl sx={{ width: 180 }}>
-								<InputLabel id="settings-language-label">
-									<Text k="settings.language.title" />
-								</InputLabel>
-								<Select
-									labelId="settings-language-label"
-									id="settings-language"
-									name="language"
-									value={language}
-									onChange={handleLanguageChange}
-									label={<Text k="settings.language.title" />}
-								>
-									<MenuItem value={"auto"}>
-										<Text k="settings.language.auto" />
-									</MenuItem>
-									<MenuItem value={"zh-CN"}>
-										<Text k="settings.language.zh_cn" />
-									</MenuItem>
-									<MenuItem value={"en-US"}>
-										<Text k="settings.language.en_us" />
-									</MenuItem>
-								</Select>
-							</FormControl>
-						</Box>
+					<Box sx={{ flexGrow: 1 }} />
 
-						{/* Theme Setting */}
-						<Box
-							display={"flex"}
-							sx={{
-								width: "100%",
-							}}
-							justifyContent={"space-between"}
-							alignItems={"center"}
+					<FormControl sx={{ width: 180 }}>
+						<InputLabel id="settings-theme-label">
+							<Text k="settings.theme.title" />
+						</InputLabel>
+						<Select
+							labelId="settings-theme-label"
+							id="settings-theme"
+							value={mode}
+							onChange={handleThemeChange}
+							label={<Text k="settings.theme.title" />}
 						>
-							<Typography variant="body1">
-								<Text k="settings.theme.title" />
-							</Typography>
-
-							<Box sx={{ flexGrow: 1 }} />
-
-							<FormControl sx={{ width: 180 }}>
-								<InputLabel id="settings-theme-label">
-									<Text k="settings.theme.title" />
-								</InputLabel>
-								<Select
-									labelId="settings-theme-label"
-									id="settings-theme"
-									value={mode}
-									onChange={handleThemeChange}
-									label={<Text k="settings.theme.title" />}
-								>
-									<MenuItem value="system">
-										<Text k="settings.theme.system" />
-									</MenuItem>
-									<MenuItem value="light">
-										<Text k="settings.theme.light" />
-									</MenuItem>
-									<MenuItem value="dark">
-										<Text k="settings.theme.dark" />
-									</MenuItem>
-								</Select>
-							</FormControl>
-						</Box>
-					</Box>
-				</MainSection>
-			</Layout>
-
-		</Text>
+							<MenuItem value="system">
+								<Text k="settings.theme.system" />
+							</MenuItem>
+							<MenuItem value="light">
+								<Text k="settings.theme.light" />
+							</MenuItem>
+							<MenuItem value="dark">
+								<Text k="settings.theme.dark" />
+							</MenuItem>
+						</Select>
+					</FormControl>
+				</Box>
+			</Box>
+		</MainSection>
 	);
 }

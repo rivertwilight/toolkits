@@ -14,19 +14,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function SettingsPage() {
-	const dic = require("../../../data/i18n.json");
-
 	const currentPage = {
 		title: "Settings",
 		description: "",
 		path: "/settings",
 	};
 
-	return (
-		<SettingsClient
-			currentPage={currentPage}
-			dic={JSON.stringify(dic)}
-			locale={defaultLocale}
-		/>
-	);
+	return <SettingsClient currentPage={currentPage} />;
 }

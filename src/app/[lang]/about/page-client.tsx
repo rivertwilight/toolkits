@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import OutlinedCard from "../../../components/OutlinedCard";
 import { styled } from "@mui/material/styles";
 import StyledMarkdown from "../../../components/StyledMarkdown";
@@ -12,12 +12,8 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import MailIcon from "@mui/icons-material/Mail";
 import { author, repo } from "../../../site.config";
 import packageInfo from "../../../../package.json";
-import { useAction } from "@/contexts/action";
 import { useLocale } from "@/contexts/locale";
-import Layout from "@/components/Layout";
-import Text from "@/components/i18n";
-
-import { store as frameStore } from "@/utils/Data/frameState";
+import { usePageTitle } from "@/utils/Hooks/usePageTitle";
 
 const PREFIX = "about";
 
@@ -59,17 +55,13 @@ const Root = styled("div")(({ theme: Theme }) => ({
 
 export default function AboutClient({
 	currentPage,
-	dic,
-	locale,
 }: {
 	currentPage: any;
-	dic: string;
-	locale: string;
 }) {
 	const { locale: activeLocale } = useLocale();
-	const { setAction } = useAction();
 	const [content, setContent] = useState("");
-	const [framed, setFramed] = useState<Boolean>(true);
+
+	usePageTitle(currentPage.title);
 
 	useEffect(() => {
 		fetch(`/data/article/${activeLocale}/about.md`)
@@ -79,74 +71,53 @@ export default function AboutClient({
 			});
 	}, [activeLocale]);
 
-	useEffect(() => {
-		setAction(null);
-	}, [setAction]);
-
-	useEffect(() => {
-		const unsubscribe = frameStore.subscribe(() =>
-			setFramed(frameStore.getState().value)
-		);
-		return () => unsubscribe();
-	}, []);
-
-	const localizedDic = useMemo(
-		() => JSON.parse(dic)[activeLocale],
-		[activeLocale, dic]
-	);
-
 	return (
-		<Text dictionary={localizedDic || {}} language={activeLocale}>
-			<Layout appData={[]} currentPage={currentPage} enableFrame={framed}>
-				<Root>
-					<OutlinedCard className={classes.authorCard}>
-						<Avatar
-							className={classes.avatar}
-							alt="Remy Sharp"
-							src="https://avatars.githubusercontent.com/u/52880665?v=4"
-							sx={{ width: 100, height: 100 }}
-						/>
-						<div className={classes.authorName}>
-							<Typography align="center" variant="subtitle2">
-								Developed and designed by{" "}
-							</Typography>
-							<Typography align="center" variant="h6">
-								RiverTwilight
-							</Typography>
-						</div>
-
-						<div className={classes.contactGroup}>
-							<IconButton href={repo} aria-label="github">
-								<GitHubIcon />
-							</IconButton>
-							{author.twitter && (
-								<IconButton
-									href={author.twitter}
-									aria-label="Go to author's X profile"
-								>
-									<TwitterIcon />
-								</IconButton>
-							)}
-							{author.email && (
-								<IconButton
-									href={`maileto://${author.email}`}
-									aria-label="Send an email to me"
-								>
-									<MailIcon />
-								</IconButton>
-							)}
-						</div>
-					</OutlinedCard>
-					<br />
-					<OutlinedCard padding={2}>
-						<StyledMarkdown content={content} />
-					</OutlinedCard>
-					<Typography align="center" color="GrayText" variant="subtitle1">
-						Version: {packageInfo.version}
+		<Root>
+			<OutlinedCard className={classes.authorCard}>
+				<Avatar
+					className={classes.avatar}
+					alt="Remy Sharp"
+					src="https://avatars.githubusercontent.com/u/52880665?v=4"
+					sx={{ width: 100, height: 100 }}
+				/>
+				<div className={classes.authorName}>
+					<Typography align="center" variant="subtitle2">
+						Developed and designed by{" "}
 					</Typography>
-				</Root>
-			</Layout>
+					<Typography align="center" variant="h6">
+						RiverTwilight
+					</Typography>
+				</div>
 
-		</Text>
+				<div className={classes.contactGroup}>
+					<IconButton href={repo} aria-label="github">
+						<GitHubIcon />
+					</IconButton>
+					{author.twitter && (
+						<IconButton
+							href={author.twitter}
+							aria-label="Go to author's X profile"
+						>
+							<TwitterIcon />
+						</IconButton>
+					)}
+					{author.email && (
+						<IconButton
+							href={`maileto://${author.email}`}
+							aria-label="Send an email to me"
+						>
+							<MailIcon />
+						</IconButton>
+					)}
+				</div>
+			</OutlinedCard>
+			<br />
+			<OutlinedCard padding={2}>
+				<StyledMarkdown content={content} />
+			</OutlinedCard>
+			<Typography align="center" color="GrayText" variant="subtitle1">
+				Version: {packageInfo.version}
+			</Typography>
+		</Root>
 	);
 }

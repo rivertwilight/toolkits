@@ -10,18 +10,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function TermsPage() {
-	const dic = require("../../../data/i18n.json");
-
 	const currentPage = {
 		title: "使用条款",
 		path: "/terms",
 	};
 
-	return (
-		<TermsClient
-			currentPage={currentPage}
-			dic={JSON.stringify(dic)}
-			locale={defaultLocale}
-		/>
-	);
+	return <TermsClient currentPage={currentPage} />;
 }

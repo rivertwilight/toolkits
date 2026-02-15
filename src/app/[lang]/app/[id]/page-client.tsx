@@ -14,9 +14,7 @@ import { styled } from "@mui/material/styles";
 import appImportList from "@/utils/appEntry";
 import { getAppConfig } from "@/utils/appData";
 import { store as frameStore } from "@/utils/Data/frameState";
-import Text from "@/components/i18n";
-
-import Layout from "@/components/Layout";
+import { usePageTitle } from "@/utils/Hooks/usePageTitle";
 
 const drawerWidth: number = 260;
 
@@ -108,23 +106,22 @@ export default function AppContainerClient({
 	appConfig: initialAppConfig,
 	appDoc,
 	currentPage,
-	dic,
 }: {
 	appConfig: any;
 	appDoc: any;
 	currentPage: any;
-	dic: string;
 }) {
 	const [FeedbackComp, setFeedbackComp] = useState(null);
 	const [showFeedbackComp, setShowFeedbackComp] = useState(false);
 	const [appConfig, setAppConfig] = useState(initialAppConfig);
-	const [framed, setFramed] = useState<Boolean>(true);
 
 	const { setAction } = useAction();
 	const { appBar, setAppBar } = useAppBar();
 	const { locale: activeLocale } = useLocale();
 	const params = useParams();
 	const id = params.id as string;
+
+	usePageTitle(currentPage.title);
 
 	const loadLink =
 		appConfig.status === "stable" || appConfig.status === "beta"
@@ -135,23 +132,13 @@ export default function AppContainerClient({
 
 	useEffect(() => {
 		setAction(<SidebarToggle handleToggle={() => setAppBar(!appBar)} />);
+		return () => setAction(null);
 	}, [appBar]);
 
 	useEffect(() => {
 		if (window.location.search.indexOf("fullscreen=1") !== -1) {
 			frameStore.dispatch({ type: "frame/disabled" });
 		}
-
-		return () => {
-			// window.hideGlobalLoadingOverlay();
-		};
-	}, []);
-
-	useEffect(() => {
-		const unsubscribe = frameStore.subscribe(() =>
-			setFramed(frameStore.getState().value)
-		);
-		return () => unsubscribe();
 	}, []);
 
 	useEffect(() => {
@@ -176,40 +163,26 @@ export default function AppContainerClient({
 
 	const feedback = useCallback(() => {
 		if (!FeedbackComp) {
-			// setFeedbackComp(
-			//   !FeedbackComp &&
-			//   Loadable(() => import("@/components/FeedbackComp"))
-			// );
 		}
 		setShowFeedbackComp(true);
 	}, [FeedbackComp]);
 
-	const localizedDic = React.useMemo(
-		() => JSON.parse(dic)[activeLocale],
-		[activeLocale, dic]
-	);
-
 	return (
-		<Text dictionary={localizedDic || {}} language={activeLocale}>
-			<Layout appData={[]} currentPage={currentPage} enableFrame={framed}>
-				<Root freeSize={!!appConfig.freeSize}>
-					<div
-						className={`${classes.content} ${
-							appBar ? classes.contentShift : ""
-						} custom-scrollbar`}
-					>
-						<ErrorBoundary>{AppComp && <AppComp />}</ErrorBoundary>
-					</div>
-					<RightDrawer onClose={() => setAppBar(!appBar)} open={appBar}>
-						<AppMenu
-							appDoc={appDoc[activeLocale]}
-							feedback={feedback}
-							appConfig={appConfig}
-						/>
-					</RightDrawer>
-				</Root>
-			</Layout>
-
-		</Text>
+		<Root freeSize={!!appConfig.freeSize}>
+			<div
+				className={`${classes.content} ${
+					appBar ? classes.contentShift : ""
+				} custom-scrollbar`}
+			>
+				<ErrorBoundary>{AppComp && <AppComp />}</ErrorBoundary>
+			</div>
+			<RightDrawer onClose={() => setAppBar(!appBar)} open={appBar}>
+				<AppMenu
+					appDoc={appDoc[activeLocale]}
+					feedback={feedback}
+					appConfig={appConfig}
+				/>
+			</RightDrawer>
+		</Root>
 	);
 }
