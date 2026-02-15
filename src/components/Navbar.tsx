@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, lazy, Suspense } from "react";
+import React, { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -9,11 +9,7 @@ import Popover from "@mui/material/Popover";
 import IconButton from "@mui/material/IconButton";
 import MenuTwoToneIcon from "@mui/icons-material/MenuTwoTone";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
-import {
-	AppsRounded,
-	AccountCircle,
-	AutoAwesomeRounded,
-} from "@mui/icons-material";
+import { AppsRounded, AutoAwesomeRounded } from "@mui/icons-material";
 import Link from "next/link";
 import { Theme, useMediaQuery, Grid, Chip, Tooltip } from "@mui/material";
 import { useSidebar } from "@/contexts/sidebar";
@@ -22,7 +18,6 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { isWeb } from "@/utils/platform";
 import Text from "./i18n";
-import { Capacitor } from "@capacitor/core";
 import Search from "@/components/SearchBox";
 import { AppData } from "@/types/index";
 
@@ -205,8 +200,6 @@ function AppsMenu() {
 	);
 }
 
-const AccountPanel = lazy(() => import("./AccountPanel"));
-
 export default (props: {
 	title: string;
 	PageAction;
@@ -216,7 +209,6 @@ export default (props: {
 	const { title, PageAction, appData } = props;
 
 	const { sidebar, setSidebar } = useSidebar();
-	const [showLoginDialog, setShowLoginDialog] = useState(false);
 	const hidden = useMediaQuery((theme: Theme) =>
 		theme.breakpoints.down("sm"),
 	);
@@ -346,28 +338,9 @@ export default (props: {
 
 						{(isRootRoute || !hidden) && <AppsMenu />}
 
-						{(!hidden || isRootRoute) &&
-							!Capacitor.isNativePlatform() && (
-								<>
-									<IconButton
-										onClick={() => setShowLoginDialog(true)}
-										size="large"
-									>
-										<AccountCircle />
-									</IconButton>
-								</>
-							)}
 					</Toolbar>
 				</AppBar>
 			</ElevationScroll>
-			{showLoginDialog && (
-				<Suspense fallback={<Box />}>
-					<AccountPanel
-						open={showLoginDialog}
-						onClose={() => setShowLoginDialog(false)}
-					/>
-				</Suspense>
-			)}
 		</>
 	);
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import { Metadata, ResolvingMetadata } from "next";
 import { getAllApps } from "@/utils/appData.server";
-import { defaultLocale } from "../../site.config";
+import siteConfig, { defaultLocale } from "../../site.config";
 import translator from "@/utils/translator";
 import HomePageClient from "./page-client";
 import { isCapacitor } from "@/utils/platform";
@@ -22,7 +22,7 @@ export async function generateMetadata(
 	const trans = new translator(dic, lang);
 
 	return {
-		title: trans.use("homePage.meta.title"),
+		title: `${trans.use("homePage.meta.title")} - ${siteConfig.appName}`,
 		description: trans.use("homePage.meta.description"),
 	};
 }

@@ -54,8 +54,6 @@
 		"@react-email/components": "^0.0.22",
 		"@stripe/react-stripe-js": "^2.9.0",
 		"@stripe/stripe-js": "^4.10.0",
-		"@supabase/ssr": "^0.5.2",
-		"@supabase/supabase-js": "^2.49.3",
 		"@svgr/webpack": "^5.5.0",
 		"@uiw/react-codemirror": "^4.23.10",
 		"axios": "^0.28.1",

@@ -142,6 +142,9 @@ const appImportList: Record<string, ComponentType> = {
 	convert_timestamp: dynamic(() => import("../apps/convert_timestamp"), {
 		ssr: false,
 	}),
+	card_game_scorer: dynamic(() => import("../apps/card_game_scorer"), {
+		ssr: false,
+	}),
 };
 
 export default appImportList;

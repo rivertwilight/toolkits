@@ -12,8 +12,6 @@ import siteConfig from "../site.config.js";
 import { SidebarProvider } from "@/contexts/sidebar";
 import { ActionProvider } from "@/contexts/action";
 import { AppBarProvider } from "@/contexts/appBar";
-import { AccountProvider } from "@/contexts/account";
-import { createClient } from "@/utils/supabase/component";
 import { Capacitor } from "@capacitor/core";
 import { Toast } from "@capacitor/toast";
 
@@ -65,36 +63,6 @@ const Layout = ({ currentPage, children, enableFrame, appData }) => {
 	const [sidebar, setSidebar] = useState(true);
 	const [appBar, setAppBar] = useState(true);
 	const [action, setAction] = useState(null);
-	const [account, setAccount] = useState(null);
-	const supabase = createClient();
-
-	useEffect(() => {
-		const fetchUserData = async () => {
-			const {
-				data: { user },
-			} = await supabase.auth.getUser();
-			if (user) {
-				const { data, error } = await supabase
-					.from("Account")
-					.select("email, first_name, last_name, avatarUrl, uid")
-					.eq("uid", user.id)
-					.single();
-
-				if (error) {
-					console.error("Error fetching user data:", error);
-				} else {
-					setAccount({
-						user,
-						avatarUrl: data.avatarUrl,
-						firstName: data.first_name,
-						lastName: data.last_name,
-					});
-				}
-			}
-		};
-		fetchUserData();
-	}, []);
-
 	const metaTitle = `${
 		currentPage
 			? `${currentPage.title} - ${siteConfig.appName}`
@@ -188,35 +156,33 @@ const Layout = ({ currentPage, children, enableFrame, appData }) => {
 						/>
 					</Head>
 					<CssBaseline />
-					<AccountProvider value={{ account, setAccount }}>
 						{enableFrame && (
-							<Header
-								repo={siteConfig.repo}
-								appData={appData}
-								PageAction={action}
-								title={
-									[].includes(currentPage.path)
-										? ""
-										: currentPage.title
-								}
-							/>
-						)}
-						<Box sx={{ display: "flex" }}>
-							<CssBaseline />
-							<Root disableTopPadding={!enableFrame}>
-								<Box
-									sx={{
-										display: "flex",
-										justifyContent: "center",
-										// marginTop: { xs: 0, sm: 2 },
-									}}
-								>
-									<Sidebar />
-									{children}
-								</Box>
-							</Root>
-						</Box>
-					</AccountProvider>
+						<Header
+							repo={siteConfig.repo}
+							appData={appData}
+							PageAction={action}
+							title={
+								[].includes(currentPage.path)
+									? ""
+									: currentPage.title
+							}
+						/>
+					)}
+					<Box sx={{ display: "flex" }}>
+						<CssBaseline />
+						<Root disableTopPadding={!enableFrame}>
+							<Box
+								sx={{
+									display: "flex",
+									justifyContent: "center",
+									// marginTop: { xs: 0, sm: 2 },
+								}}
+							>
+								<Sidebar />
+								{children}
+							</Box>
+						</Root>
+					</Box>
 					<GlobalSnackbar />
 					<GlobalLoading />
 				</ActionProvider>

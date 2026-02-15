@@ -40,7 +40,10 @@ export async function generateMetadata(): Promise<Metadata> {
 			description: siteConfig.description,
 			images: [ogImageUrl],
 			creator: siteConfig.author.twitter
-				? siteConfig.author.twitter.replace(/^https?:\/\/(www\.)?(x\.com|twitter\.com)\//, "")
+				? siteConfig.author.twitter.replace(
+						/^https?:\/\/(www\.)?(x\.com|twitter\.com)\//,
+						"",
+					)
 				: undefined,
 		},
 		icons: {
@@ -137,7 +140,9 @@ export default function RootLayout({
 			<body>
 				<RootLayoutClient>{children}</RootLayoutClient>
 				{process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS && (
-					<GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
+					<GoogleAnalytics
+						gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}
+					/>
 				)}
 			</body>
 		</html>
