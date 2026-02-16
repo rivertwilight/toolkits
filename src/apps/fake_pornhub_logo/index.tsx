@@ -15,9 +15,8 @@ import {
 	IconButton,
 	Tooltip,
 	Typography,
-	FormControl,
-	Select,
-	MenuItem,
+	Chip,
+	TextField,
 } from "@mui/material";
 import BorderVerticalIcon from "@mui/icons-material/BorderVertical";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
@@ -29,29 +28,19 @@ import Text, { t } from "@/components/i18n";
 const IfBr = ({ statu }: { statu: string }) =>
 	statu === "vertical" ? <br /> : null;
 
-const FakeLogo = ({
-	hStyle,
-	frontStyle,
-	lastStyle,
-	scale = 1,
-	aspectRatio,
-}: any) => {
+const FakeLogo = ({ hStyle, frontStyle, lastStyle, dimensions }: any) => {
 	return (
 		<Paper
-			elevation={3}
+			elevation={0}
 			sx={{
 				width: "100%",
 				maxWidth: "600px",
 				height: 0,
-				paddingTop: {
-					"1/1": "100%",
-					"4/3": "75%",
-					"16/9": "56.25%",
-					"2/1": "50%",
-				}[aspectRatio],
+				paddingTop: `${(dimensions.height / dimensions.width) * 100}%`,
 				position: "relative",
 				bgcolor: "#000000",
 				overflow: "hidden",
+				borderRadius: 0,
 			}}
 			id="blackborad"
 		>
@@ -69,7 +58,6 @@ const FakeLogo = ({
 			>
 				<Box
 					sx={{
-						transform: `scale(${scale})`,
 						width: "100%",
 						px: 2,
 					}}
@@ -99,7 +87,7 @@ const FakeLogo = ({
 							contentEditable
 							suppressContentEditableWarning
 						>
-							Ygkt
+							Tool
 						</Box>
 						<IfBr statu={hStyle.array} />
 						<Box
@@ -115,7 +103,7 @@ const FakeLogo = ({
 							contentEditable
 							suppressContentEditableWarning
 						>
-							ool
+							kits
 						</Box>
 					</Typography>
 				</Box>
@@ -140,21 +128,39 @@ const FakePornhubLogo = () => {
 		backgroundColor: "#f79817",
 	});
 
-	const [scale, setScale] = useState(1);
-
 	// Add Safari detection
 	const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
-	// Add new aspect ratio state
-	const [aspectRatio, setAspectRatio] = useState("2/1");
+	const dimensionPresets = [
+		{ label: "1080 × 1080", width: 1080, height: 1080 },
+		{ label: "1920 × 1080", width: 1920, height: 1080 },
+		{ label: "1200 × 630", width: 1200, height: 630 },
+		{ label: "800 × 400", width: 800, height: 400 },
+	];
+
+	const [dimensions, setDimensions] = useState({
+		width: 800,
+		height: 400,
+	});
+
+	const getPreviewText = () => {
+		const el = document.querySelector("#blackborad");
+		if (!el) return "logo";
+		const spans = el.querySelectorAll("[contenteditable]");
+		return Array.from(spans)
+			.map((s) => s.textContent?.trim())
+			.filter(Boolean)
+			.join("");
+	};
 
 	const handleDownload = async () => {
 		const canvas = await html2canvas(document.querySelector("#blackborad"));
 		const base64 = canvas.toDataURL("image/png");
+		const filename = getPreviewText() || "logo";
 		saveFile({
 			file: base64,
 			type: "png",
-			filename: "ygktool-logo.png",
+			filename: `${filename}.png`,
 		});
 	};
 
@@ -179,17 +185,11 @@ const FakePornhubLogo = () => {
 
 	const handleFontSizeChange = (
 		event: Event,
-		newValue: number | number[]
+		newValue: number | number[],
 	) => {
 		console.log("handleFontSizeChange", event, newValue);
 		if (typeof newValue === "number") {
 			setHStyle({ ...hStyle, size: newValue });
-		}
-	};
-
-	const handleScaleChange = (event: Event, newValue: number | number[]) => {
-		if (typeof newValue === "number") {
-			setScale(newValue);
 		}
 	};
 
@@ -201,38 +201,55 @@ const FakePornhubLogo = () => {
 				px: { xs: 0, sm: 2 },
 				py: 3,
 				width: "100%",
-				maxWidth: "1200px",
 				mx: "auto",
 			}}
 		>
 			{/* Left Column - Preview */}
 			<Stack
-				spacing={3}
+				spacing={2}
 				alignItems="center"
 				sx={{
-					width: { xs: "100%", md: "50%" },
+					flex: 1,
+					minWidth: 0,
 				}}
 			>
 				<Box
 					sx={{
 						width: "100%",
-						maxWidth: "600px",
+						aspectRatio: "4 / 3",
 						display: "flex",
 						justifyContent: "center",
 						alignItems: "center",
-						bgcolor: "background.paper",
+						bgcolor: (theme) =>
+							theme.palette.mode === "dark"
+								? "grey.900"
+								: "grey.100",
+						backgroundImage:
+							"linear-gradient(45deg, rgba(128,128,128,0.1) 25%, transparent 25%, transparent 75%, rgba(128,128,128,0.1) 75%), linear-gradient(45deg, rgba(128,128,128,0.1) 25%, transparent 25%, transparent 75%, rgba(128,128,128,0.1) 75%)",
+						backgroundSize: "20px 20px",
+						backgroundPosition: "0 0, 10px 10px",
 						borderRadius: 2,
+						border: 1,
+						borderColor: "divider",
 						overflow: "hidden",
+						p: 6,
 					}}
 				>
 					<FakeLogo
 						hStyle={hStyle}
 						frontStyle={front}
 						lastStyle={last}
-						scale={scale}
-						aspectRatio={aspectRatio}
+						dimensions={dimensions}
 					/>
 				</Box>
+
+				<Typography
+					variant="caption"
+					color="text.secondary"
+					sx={{ textAlign: "center" }}
+				>
+					{t("Tap the text in preview to edit")}
+				</Typography>
 
 				<Stack direction="row" spacing={2} justifyContent="center">
 					<Tooltip
@@ -263,8 +280,8 @@ const FakePornhubLogo = () => {
 			{/* Right Column - Settings */}
 			<List
 				sx={{
-					width: { xs: "100%", md: "50%" },
-					maxWidth: { xs: 600, md: "100%" },
+					flex: 1,
+					minWidth: 0,
 					padding: 0,
 				}}
 			>
@@ -284,28 +301,70 @@ const FakePornhubLogo = () => {
 				</OutlinedCard>
 
 				<OutlinedCard padding={2} style={{ marginTop: 10 }}>
-					<Typography gutterBottom>
-						{`${t("Size Scale")}: ${scale.toFixed(1)}`}
-					</Typography>
-					<Slider
-						aria-label="Scale"
-						value={scale}
-						onChange={handleScaleChange}
-						min={0.5}
-						max={2}
-						step={0.1}
-					/>
-					<FormControl size="small">
-						<Select
-							value={aspectRatio}
-							onChange={(e) => setAspectRatio(e.target.value)}
-						>
-							<MenuItem value="1/1">1:1</MenuItem>
-							<MenuItem value="4/3">4:3</MenuItem>
-							<MenuItem value="16/9">16:9</MenuItem>
-							<MenuItem value="2/1">2:1</MenuItem>
-						</Select>
-					</FormControl>
+					<Typography gutterBottom>{t("Dimensions")}</Typography>
+					<Stack
+						direction="row"
+						spacing={1}
+						sx={{ flexWrap: "wrap", gap: 1, mb: 2 }}
+					>
+						{dimensionPresets.map((preset) => (
+							<Chip
+								key={preset.label}
+								label={preset.label}
+								size="small"
+								variant={
+									dimensions.width === preset.width &&
+									dimensions.height === preset.height
+										? "filled"
+										: "outlined"
+								}
+								color={
+									dimensions.width === preset.width &&
+									dimensions.height === preset.height
+										? "primary"
+										: "default"
+								}
+								onClick={() =>
+									setDimensions({
+										width: preset.width,
+										height: preset.height,
+									})
+								}
+							/>
+						))}
+					</Stack>
+					<Stack direction="row" spacing={2}>
+						<TextField
+							label={t("Width")}
+							type="number"
+							size="small"
+							value={dimensions.width}
+							onChange={(e) =>
+								setDimensions({
+									...dimensions,
+									width: parseInt(e.target.value, 10) || 1,
+								})
+							}
+							slotProps={{
+								htmlInput: { min: 1 },
+							}}
+						/>
+						<TextField
+							label={t("Height")}
+							type="number"
+							size="small"
+							value={dimensions.height}
+							onChange={(e) =>
+								setDimensions({
+									...dimensions,
+									height: parseInt(e.target.value, 10) || 1,
+								})
+							}
+							slotProps={{
+								htmlInput: { min: 1 },
+							}}
+						/>
+					</Stack>
 				</OutlinedCard>
 
 				<OutlinedCard padding={1} style={{ marginTop: 10 }}>
