@@ -1,11 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import sharp from "sharp";
 
+/** Strip leading `#`, then return `#hex` for 3/6-char hex values or the bare name for CSS named colors. */
+function normalizeColor(val: string): string {
+	const stripped = val.replace(/^#/, "");
+	if (/^[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$/.test(stripped)) {
+		return `#${stripped}`;
+	}
+	return stripped;
+}
+
 // Check all supported icons at https://mui.com/material-ui/material-icons/
 export async function GET(request: NextRequest) {
 	const searchParams = request.nextUrl.searchParams;
 	const iconName = searchParams.get("iconName") || "Home";
-	const iconColor = searchParams.get("iconColor") || "fff";
+	const iconColor = normalizeColor(searchParams.get("iconColor") || "fff");
 	const backgroundColor1 = searchParams.get("backgroundColor1");
 	const backgroundColor2 = searchParams.get("backgroundColor2");
 
@@ -37,13 +46,12 @@ export async function GET(request: NextRequest) {
 			);
 		}
 
-		// Get the SVG content and modify fill color
+		// Get the SVG content
 		let svgContent = await iconResponse.text();
-		// Replace any existing fill attributes or add fill to svg tag
-		svgContent = svgContent.replace(
-			/<svg([^>]*)>/,
-			`<svg$1 fill="#${iconColor}">`
-		);
+
+		// Extract the viewBox from the source SVG (e.g. "0 -960 960 960")
+		const viewBoxMatch = svgContent.match(/viewBox="([^"]*)"/);
+		const viewBox = viewBoxMatch ? viewBoxMatch[1] : "0 -960 960 960";
 
 		let backgroundFill: string;
 
@@ -51,14 +59,14 @@ export async function GET(request: NextRequest) {
 			backgroundFill = `
 				<defs>
 					<linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-						<stop offset="0%" style="stop-color:#${backgroundColor1};stop-opacity:1" />
-						<stop offset="100%" style="stop-color:#${backgroundColor2};stop-opacity:1" />
+						<stop offset="0%" style="stop-color:${normalizeColor(backgroundColor1)};stop-opacity:1" />
+						<stop offset="100%" style="stop-color:${normalizeColor(backgroundColor2)};stop-opacity:1" />
 					</linearGradient>
 				</defs>
 				<rect width="200" height="200" fill="url(#grad)"/>
 			`;
 		} else if (backgroundColor1) {
-			backgroundFill = `<rect width="200" height="200" fill="#${backgroundColor1}"/>`;
+			backgroundFill = `<rect width="200" height="200" fill="${normalizeColor(backgroundColor1)}"/>`;
 		} else {
 			const color1 = Math.floor(Math.random() * 16777215).toString(16);
 			const color2 = Math.floor(Math.random() * 16777215).toString(16);
@@ -80,9 +88,9 @@ export async function GET(request: NextRequest) {
 		const svgBuffer = Buffer.from(`
 			<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
 				${backgroundFill}
-				<g transform="translate(50, 50) scale(4.16)">
+				<svg x="50" y="50" width="100" height="100" viewBox="${viewBox}" fill="${iconColor}">
 					${innerSvg}
-				</g>
+				</svg>
 			</svg>
 		`);
 
