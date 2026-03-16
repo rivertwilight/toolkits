@@ -37,13 +37,12 @@ export async function GET(request: NextRequest) {
 			);
 		}
 
-		// Get the SVG content and modify fill color
+		// Get the SVG content
 		let svgContent = await iconResponse.text();
-		// Replace any existing fill attributes or add fill to svg tag
-		svgContent = svgContent.replace(
-			/<svg([^>]*)>/,
-			`<svg$1 fill="#${iconColor}">`
-		);
+
+		// Extract the viewBox from the source SVG (e.g. "0 -960 960 960")
+		const viewBoxMatch = svgContent.match(/viewBox="([^"]*)"/);
+		const viewBox = viewBoxMatch ? viewBoxMatch[1] : "0 -960 960 960";
 
 		let backgroundFill: string;
 
@@ -80,9 +79,9 @@ export async function GET(request: NextRequest) {
 		const svgBuffer = Buffer.from(`
 			<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
 				${backgroundFill}
-				<g transform="translate(50, 50) scale(4.16)">
+				<svg x="50" y="50" width="100" height="100" viewBox="${viewBox}" fill="#${iconColor}">
 					${innerSvg}
-				</g>
+				</svg>
 			</svg>
 		`);
 
