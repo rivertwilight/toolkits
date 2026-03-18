@@ -60,7 +60,7 @@ const Shortcuts = ({ kwd }: { kwd: string }) => {
 	);
 };
 
-const SearchResult = ({ result = [], kwd }: any) => {
+const SearchResult = ({ result = [], kwd, onSelect }: any) => {
 	if (kwd === "") return null;
 
 	const handleKeydown = (e: any) => {
@@ -80,12 +80,13 @@ const SearchResult = ({ result = [], kwd }: any) => {
 	let history = useRouter();
 	function handleClick(url: any) {
 		history.push(url);
+		onSelect?.();
 	}
 
 	useEventListener("keydown", handleKeydown);
 
 	return (
-		<Box sx={{ padding: 2 }}>
+		<Box sx={{ padding: 2 }} onClick={() => onSelect?.()}>
 			<List component="div" disablePadding>
 				<Grid container spacing={1}>
 					{!!result.length &&
@@ -288,7 +289,7 @@ const Search = ({ appData: propAppData }: SearchProps) => {
 						border: (theme) => `1px solid ${theme.palette.divider}`,
 					}}
 				>
-					<SearchResult kwd={kwd} result={searchResult} />
+					<SearchResult kwd={kwd} result={searchResult} onSelect={() => setKwd("")} />
 				</Box>
 			)}
 		</Box>
