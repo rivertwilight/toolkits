@@ -157,6 +157,30 @@ const appImportList: Record<string, ComponentType> = {
 	hash_generator: dynamic(() => import("../apps/hash_generator"), {
 		ssr: false,
 	}),
+	jwt_decoder: dynamic(() => import("../apps/jwt_decoder"), {
+		ssr: false,
+	}),
+	cron_parser: dynamic(() => import("../apps/cron_parser"), {
+		ssr: false,
+	}),
+	chmod_calculator: dynamic(() => import("../apps/chmod_calculator"), {
+		ssr: false,
+	}),
+	bpm_delay_calculator: dynamic(
+		() => import("../apps/bpm_delay_calculator"),
+		{
+			ssr: false,
+		},
+	),
+	nd_filter_calculator: dynamic(
+		() => import("../apps/nd_filter_calculator"),
+		{
+			ssr: false,
+		},
+	),
+	maidenhead_locator: dynamic(() => import("../apps/maidenhead_locator"), {
+		ssr: false,
+	}),
 };
 
 export default appImportList;
