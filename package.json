@@ -79,7 +79,7 @@
 		"node-fetch": "^3.3.2",
 		"openai": "^3.3.0",
 		"pdf-lib": "^1.17.1",
-		"postcss": "^8.5.3",
+		"postcss": "^8.5.10",
 		"qrcode": "^1.5.4",
 		"raw-loader": "^4.0.2",
 		"react": "^19.1.0",
